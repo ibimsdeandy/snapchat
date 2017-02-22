@@ -1,0 +1,11 @@
+{
+  "name": "group-chat",
+  "version": "0.0.1",
+  "description": "",
+  "dependencies": {
+    "express": "^4.10.2",
+    "socket.io": "^1.4.8",
+    "svn": "0.0.1",
+    "jsonfile": "~2.3.1"
+  }
+}
