@@ -1,0 +1,7 @@
+var Chat = {
+
+    Init: function () {
+
+    }
+
+};

@@ -1,0 +1,472 @@
+<!doctype html>
+<html>
+<head>
+    <title>WebChat</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://bootswatch.com/readable/bootstrap.css"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"/>
+    <style>
+
+        @import url(http://fonts.googleapis.com/css?family=Roboto:400,700);
+
+        form input {
+            border: 0;
+            padding: 10px;
+            width: 93%;
+        }
+
+        #messages {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        #messages li {
+            padding: 5px 10px;
+        }
+
+        .chat-history {
+            max-height: 700px;
+            height: 700px;
+            overflow: auto;
+        }
+
+        .chat .chat-history .message-data-time {
+            color: #a8aab1;
+            padding-left: 6px;
+        }
+
+        .chat .chat-history .message {
+            color: white;
+            padding: 6px 11px;
+            line-height: 26px;
+            border-radius: 5px;
+            font-size: 14px;
+
+            position: relative;
+        }
+
+        .chat .chat-history .you-message {
+            background: #CCDBDC;
+            color: #003366;
+        }
+
+        .chat .chat-history .me-message {
+            background: #E9724C;
+        }
+
+        input {
+            outline: none;
+        }
+
+        .chat-ul li {
+            list-style-type: none;
+        }
+
+        html {
+            width: 100%;
+            height: 100%;
+        }
+
+        .footer {
+            color: #fff;
+        }
+
+        body {
+            padding: 45px 0;
+            font: 14px 'Open Sans', "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+            color: #8F7F70;
+
+            background: #7abcff; /* Old browsers */
+            background: -moz-linear-gradient(top, #7abcff 0%, #60abf8 44%, #4096ee 100%); /* FF3.6-15 */
+            background: -webkit-linear-gradient(top, #7abcff 0%, #60abf8 44%, #4096ee 100%); /* Chrome10-25,Safari5.1-6 */
+            background: linear-gradient(to bottom, #7abcff 0%, #60abf8 44%, #4096ee 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+            filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#7abcff', endColorstr='#4096ee', GradientType=0); /* IE6-9 */
+
+        }
+
+        /*-- BS3 Modified Classes --*/
+        .panel {
+            border: none;
+            box-shadow: 0 1px 1px rgba(0, 0, 0, 0.25);
+            border-radius: 5px;
+        }
+
+        .panel-footer {
+            border-bottom-right-radius: 5px;
+            border-bottom-left-radius: 5px;
+        }
+
+        #typing {
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+        }
+
+        #gifs {
+            background: #fff;
+            position: absolute;
+            bottom: 0px;
+            left: 0px;
+            right: 0px;
+            height: 300px;
+        }
+
+        #gifcontent {
+            padding: 5px;
+            max-height: 221px;
+            overflow: auto;
+        }
+
+        .smiley {
+            font-size: 20px;
+            cursor: pointer;
+        }
+
+        #smileyContent {
+            padding: 5px;
+        }
+
+        #smiley {
+            cursor: pointer;
+            font-size: 18px;
+        }
+
+        img {
+            cursor: pointer;
+        }
+
+        ::-webkit-scrollbar {
+            width: 2px;
+            height: 2px;
+        }
+
+        ::-webkit-scrollbar-button {
+            width: 0px;
+            height: 0px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #e1e1e1;
+            border: 0px none #ffffff;
+            border-radius: 50px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #ffffff;
+        }
+
+        ::-webkit-scrollbar-thumb:active {
+            background: #000000;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #666666;
+            border: 0px none #ffffff;
+            border-radius: 50px;
+        }
+
+        ::-webkit-scrollbar-track:hover {
+            background: #666666;
+        }
+
+        ::-webkit-scrollbar-track:active {
+            background: #333333;
+        }
+
+        ::-webkit-scrollbar-corner {
+            background: transparent;
+        }
+    </style>
+
+</head>
+<body>
+
+<div class="container">
+    <div class="col-lg-8">
+        <div class="panel">
+            <div class="panel-body" style="position: relative;">
+
+                <div class="chat">
+                    <div class="chat-history">
+                        <ul class="chat-ul" id="messages">
+                        </ul>
+
+                    </div>
+                </div>
+                <div id="typing" style="display: none; position: absolute;">Tippt...</div>
+                <div id="gifs">
+                    <ul class="nav nav-tabs">
+                        <li class="active"><a href="#smileyContent" data-toggle="tab">&#x1F601;</a></li>
+                        <li><a href="#gifTab" data-toggle="tab">GIF</a></li>
+                    </ul>
+                    <div id="myTabContent" class="tab-content">
+                        <div class="tab-pane fade active in" id="smileyContent">
+                            <span class="smiley" data-id="0">&#x1F601;</span>
+                            <span class="smiley" data-id="1">&#x1F602;</span>
+                            <span class="smiley" data-id="2">&#x1F603;</span>
+                            <span class="smiley" data-id="3">&#x1F604;</span>
+                            <span class="smiley" data-id="4">&#x1F605;</span>
+                            <span class="smiley" data-id="5">&#x1F606;</span>
+                            <span class="smiley" data-id="6">&#x1F609;</span>
+                            <span class="smiley" data-id="7">&#x1F60A;</span>
+                            <span class="smiley" data-id="8">&#x1F60B;</span>
+                            <span class="smiley" data-id="9">&#x1F60C;</span>
+                            <span class="smiley" data-id="10">&#x1F60D;</span>
+                            <span class="smiley" data-id="11">&#x1F60F;</span>
+                            <span class="smiley" data-id="12">&#x1F612;</span>
+                            <span class="smiley" data-id="13">&#x1F613;</span>
+                            <span class="smiley" data-id="14">&#x1F614;</span>
+                            <span class="smiley" data-id="15">&#x1F616;</span>
+                            <span class="smiley" data-id="16">&#x1F618;</span>
+                            <span class="smiley" data-id="17">&#x1F61A;</span>
+                            <span class="smiley" data-id="18">&#x1F61C;</span>
+                            <span class="smiley" data-id="19">&#x1F61D;</span>
+                            <span class="smiley" data-id="20">&#x1F61E;</span>
+                            <span class="smiley" data-id="21">&#x1F620;</span>
+                            <span class="smiley" data-id="22">&#x1F621;</span>
+                            <span class="smiley" data-id="23">&#x1F622;</span>
+                            <span class="smiley" data-id="24">&#x1F623;</span>
+                            <span class="smiley" data-id="25">&#x1F624;</span>
+                            <span class="smiley" data-id="26">&#x1F625;</span>
+                            <span class="smiley" data-id="27">&#x1F628;</span>
+                            <span class="smiley" data-id="28">&#x1F629;</span>
+                            <span class="smiley" data-id="29">&#x1F62A;</span>
+                            <span class="smiley" data-id="30">&#x1F62B;</span>
+                            <span class="smiley" data-id="31">&#x1F62D;</span>
+                            <span class="smiley" data-id="32">&#x1F630;</span>
+                            <span class="smiley" data-id="33">&#x1F631;</span>
+                            <span class="smiley" data-id="34">&#x1F632;</span>
+                            <span class="smiley" data-id="35">&#x1F633;</span>
+                            <span class="smiley" data-id="36">&#x1F635;</span>
+                            <span class="smiley" data-id="37">&#x1F637;</span>
+                            <span class="smiley" data-id="38">&#x1F638;</span>
+                            <span class="smiley" data-id="39">&#x1F639;</span>
+                            <span class="smiley" data-id="40">&#x1F63A;</span>
+                            <span class="smiley" data-id="41">&#x1F63B;</span>
+                            <span class="smiley" data-id="42">&#x1F63C;</span>
+                            <span class="smiley" data-id="43">&#x1F63D;</span>
+                            <span class="smiley" data-id="44">&#x1F63E;</span>
+                            <span class="smiley" data-id="45">&#x1F63F;</span>
+                            <span class="smiley" data-id="46">&#x1F640;</span>
+                            <span class="smiley" data-id="47">&#x1F645;</span>
+                            <span class="smiley" data-id="48">&#x1F646;</span>
+                            <span class="smiley" data-id="49">&#x1F647;</span>
+                            <span class="smiley" data-id="50">&#x1F648;</span>
+                            <span class="smiley" data-id="54">&#x1F64C;</span>
+                            <span class="smiley" data-id="55">&#x1F64D;</span>
+                            <span class="smiley" data-id="56">&#x1F64E;</span>
+                            <span class="smiley" data-id="57">&#x1F64F;</span>
+                            <span class="smiley" data-id="719">&#x1F600;</span>
+                            <span class="smiley" data-id="720">&#x1F607;</span>
+                            <span class="smiley" data-id="721">&#x1F608;</span>
+                            <span class="smiley" data-id="722">&#x1F60E;</span>
+                            <span class="smiley" data-id="723">&#x1F610;</span>
+                            <span class="smiley" data-id="724">&#x1F611;</span>
+                            <span class="smiley" data-id="725">&#x1F615;</span>
+                            <span class="smiley" data-id="726">&#x1F617;</span>
+                            <span class="smiley" data-id="727">&#x1F619;</span>
+                            <span class="smiley" data-id="728">&#x1F61B;</span>
+                            <span class="smiley" data-id="729">&#x1F61F;</span>
+                            <span class="smiley" data-id="730">&#x1F626;</span>
+                            <span class="smiley" data-id="731">&#x1F627;</span>
+                            <span class="smiley" data-id="732">&#x1F62C;</span>
+                            <span class="smiley" data-id="733">&#x1F62E;</span>
+                            <span class="smiley" data-id="734">&#x1F62F;</span>
+                            <span class="smiley" data-id="735">&#x1F634;</span>
+                            <span class="smiley" data-id="736">&#x1F636;</span>
+                            <span class="smiley" data-id="51">&#x1F649;</span>
+                            <span class="smiley" data-id="52">&#x1F64A;</span>
+                            <span class="smiley" data-id="53">&#x1F64B;</span>
+                            <span class="smiley" data-id="430">&#x1F40C;</span>
+                            <span class="smiley" data-id="431">&#x1F40D;</span>
+                            <span class="smiley" data-id="432">&#x1F40E;</span>
+                            <span class="smiley" data-id="433">&#x1F411;</span>
+                            <span class="smiley" data-id="434">&#x1F412;</span>
+                            <span class="smiley" data-id="435">&#x1F414;</span>
+                            <span class="smiley" data-id="436">&#x1F417;</span>
+                            <span class="smiley" data-id="437">&#x1F418;</span>
+                            <span class="smiley" data-id="439">&#x1F41A;</span>
+                            <span class="smiley" data-id="440">&#x1F41B;</span>
+                            <span class="smiley" data-id="441">&#x1F41C;</span>
+                            <span class="smiley" data-id="442">&#x1F41D;</span>
+                            <span class="smiley" data-id="443">&#x1F41E;</span>
+                            <span class="smiley" data-id="444">&#x1F41F;</span>
+                            <span class="smiley" data-id="445">&#x1F420;</span>
+                            <span class="smiley" data-id="446">&#x1F421;</span>
+                            <span class="smiley" data-id="447">&#x1F422;</span>
+                            <span class="smiley" data-id="448">&#x1F423;</span>
+                            <span class="smiley" data-id="449">&#x1F424;</span>
+                            <span class="smiley" data-id="450">&#x1F425;</span>
+                            <span class="smiley" data-id="451">&#x1F426;</span>
+                            <span class="smiley" data-id="452">&#x1F427;</span>
+                            <span class="smiley" data-id="453">&#x1F428;</span>
+                            <span class="smiley" data-id="454">&#x1F429;</span>
+                            <span class="smiley" data-id="455">&#x1F42B;</span>
+                            <span class="smiley" data-id="456">&#x1F42C;</span>
+                            <span class="smiley" data-id="457">&#x1F42D;</span>
+                            <span class="smiley" data-id="458">&#x1F42E;</span>
+                            <span class="smiley" data-id="459">&#x1F42F;</span>
+                            <span class="smiley" data-id="460">&#x1F430;</span>
+                            <span class="smiley" data-id="461">&#x1F431;</span>
+                            <span class="smiley" data-id="462">&#x1F432;</span>
+                            <span class="smiley" data-id="463">&#x1F433;</span>
+                            <span class="smiley" data-id="464">&#x1F434;</span>
+                            <span class="smiley" data-id="465">&#x1F435;</span>
+                            <span class="smiley" data-id="466">&#x1F436;</span>
+                            <span class="smiley" data-id="467">&#x1F437;</span>
+                            <span class="smiley" data-id="468">&#x1F438;</span>
+                            <span class="smiley" data-id="469">&#x1F439;</span>
+                            <span class="smiley" data-id="470">&#x1F43A;</span>
+                            <span class="smiley" data-id="471">&#x1F43B;</span>
+                            <span class="smiley" data-id="472">&#x1F43C;</span>
+                            <span class="smiley" data-id="467">&#x1F437;</span>
+                            <span class="smiley" data-id="468">&#x1F438;</span>
+                            <span class="smiley" data-id="469">&#x1F439;</span>
+                            <span class="smiley" data-id="470">&#x1F43A;</span>
+                            <span class="smiley" data-id="471">&#x1F43B;</span>
+                            <span class="smiley" data-id="472">&#x1F43C;</span>
+                            <span class="smiley" data-id="473">&#x1F43D;</span>
+                            <span class="smiley" data-id="474">&#x1F43E;</span>
+                            <span class="smiley" data-id="475">&#x1F440;</span>
+                            <span class="smiley" data-id="476">&#x1F442;</span>
+                            <span class="smiley" data-id="477">&#x1F443;</span>
+                            <span class="smiley" data-id="478">&#x1F444;</span>
+                            <span class="smiley" data-id="479">&#x1F445;</span>
+                            <span class="smiley" data-id="480">&#x1F446;</span>
+                            <span class="smiley" data-id="481">&#x1F447;</span>
+                            <span class="smiley" data-id="482">&#x1F448;</span>
+                            <span class="smiley" data-id="483">&#x1F449;</span>
+                            <span class="smiley" data-id="484">&#x1F44A;</span>
+                            <span class="smiley" data-id="485">&#x1F44B;</span>
+                            <span class="smiley" data-id="486">&#x1F44C;</span>
+                            <span class="smiley" data-id="487">&#x1F44D;</span>
+                            <span class="smiley" data-id="488">&#x1F44E;</span>
+                            <span class="smiley" data-id="489">&#x1F44F;</span>
+                            <span class="smiley" data-id="490">&#x1F450;</span>
+                            <span class="smiley" data-id="356">&#x1F382;</span>
+                            <span class="smiley" data-id="558">&#x1F497;</span>
+                        </div>
+                        <div class="tab-pane fade" id="gifTab">
+                            <form action="" id="gifform">
+                                <input type="text" autocomplete="off" name="gifsearch" id="gifsearch"
+                                       placeholder="GIPHY durchsuchen ..."/>
+                            </form>
+                            <div id="gifcontent"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-footer">
+                <form action="" id="chatform">
+                    <span id="smiley">&#x1F601;</span>
+                    <input id="m" autocomplete="off" contenteditable="true" placeholder="Schreibe eine Nachricht ..."/>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.3/socket.io.js"></script>
+<script src="http://code.jquery.com/jquery-1.11.1.js"></script>
+<script type="text/javascript"
+        src="https://bootswatch.com/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('#m').focus();
+        $('#gifs').hide();
+    });
+    $('#smiley').click(function () {
+        $('#gifs').slideToggle();
+        $('#m').focus();
+    });
+    $('.smiley').click(function () {
+        $('#m').val($('#m').val() + ' ' + $(this).html()).focus();
+    });
+    var socket = io();
+    var name = null;
+    var unread = 0;
+    $('#gifform').submit(function () {
+        $('#gifcontent').html('');
+        $.ajax('http://api.giphy.com/v1/gifs/search?q=' + $('#gifsearch').val() + '&api_key=dc6zaTOxFJmzC', {
+            success: function (response) {
+                $.each(response.data, function (key, data) {
+                    console.log(data.url);
+                    $('#gifcontent').append('<img src="https://media.giphy.com/media/' + data.id + '/giphy.gif" height="80" data-role="gif"/>');
+                });
+                $('[data-role=gif]').click(function () {
+                    socket.emit('chat message', {
+                        id: name,
+                        msg: $(this).attr('src')
+                    });
+                });
+            }
+        });
+
+        $('#gifsearch').focus();
+        return false;
+    });
+    $('#chatform').submit(function () {
+        if ($('#m').val() == '') {
+            return false;
+        }
+        socket.emit('chat message', {
+            id: name,
+            msg: $('#m').val(),
+        });
+        $('#m').val('');
+        return false;
+    });
+
+    $('#m').keydown(function () {
+        socket.emit('senddata', {
+            id: name,
+            typing: true
+        });
+    });
+
+    $('#m').keyup(function () {
+        socket.emit('senddata', {
+            id: name,
+            typing: false
+        });
+    });
+
+    socket.on('setdata', function (data) {
+        name = data.id;
+    });
+
+    socket.on('data', function (data) {
+        $('#typing').hide();
+        if (data.typing && data.id != name) {
+            $('#typing').show();
+        }
+    });
+
+    $(window).focus(function () {
+        document.title = 'WebChat';
+        $('#m').focus();
+    });
+
+    socket.on('chat message', function (msg) {
+        var e = msg.msg.split('.');
+
+        if (msg.id == name) {
+            var className = 'message you-message pull-left';
+        } else {
+            var className = 'message me-message pull-right';
+            unread += 1;
+            document.title = '(' + unread + ') WebChat';
+        }
+        if (e[e.length - 1] == 'gif' || e[e.length - 1] == 'jpg' || e[e.length - 1] == 'png') {
+            msg.msg = '<a href="' + msg.msg + '" target="_blank"><img src="' + msg.msg + '" width="250"/></a>';
+        }
+        var b = $('<li>').addClass('clearfix').html('<div class="' + className + '">' + msg.msg + '</div>').fadeIn();
+        $('#messages').append(b);
+        window.setTimeout(function() {
+            $('.chat-history').animate({ scrollTop: $('.chat-history').height() }, 1000);
+        }, 100);
+    });
+</script>
+</body>
+</html>
